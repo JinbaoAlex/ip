@@ -19,7 +19,7 @@ public class Volkov {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            String input = sc.next();
+            String input = sc.nextLine();
 
             if (input.equals("bye")) {
                 System.out.println(formatResponse("     Bye. Hope to see you again soon!"));
@@ -36,16 +36,14 @@ public class Volkov {
                     sb.append("    " + listOfTasks[i]);
                 }
                 System.out.println(formatResponse(sb.toString()));
-            } else if (input.equals("mark")) {
-                int taskNo = sc.nextInt() - 1;
-                sc.nextLine();
+            } else if (input.startsWith("mark")) {
+                int taskNo = Integer.parseInt(input.substring(5));
                 listOfTasks[taskNo].markAsDone();
                 String reply = "     Nice! I've marked this task as done:\n"
                         + "       " + listOfTasks[taskNo].toString();
                 System.out.println(formatResponse(reply));
-            } else if (input.equals("unmark")) {
-                int taskNo = sc.nextInt() - 1;
-                sc.nextLine();
+            } else if (input.startsWith("unmark")) {
+                int taskNo = Integer.parseInt(input.substring(7));
                 listOfTasks[taskNo].unmarkAsDone();
                 String reply = "     OK, I've marked this task as not done yet:\n"
                         + "       " + listOfTasks[taskNo].toString();
