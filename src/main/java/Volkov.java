@@ -1,9 +1,11 @@
 import java.util.Scanner;
 
 public class Volkov {
+    private static String[] storeText = new String[100];
+    private static int storeTextIndex = 0;
     public static String basicResponse(String msg) {
         return "    ____________________________________________________________\n"
-                + "    " + msg + "\n"
+                + msg + "\n"
                 + "    ____________________________________________________________\n";
     }
 
@@ -15,13 +17,40 @@ public class Volkov {
         System.out.println(opening);
 
         Scanner sc = new Scanner(System.in);
-        String command = sc.nextLine();
-        while(!command.equals("bye")) {
-            String reply = basicResponse(command);
-            System.out.println(reply);
-            command = sc.nextLine();
+
+        while (true) {
+            boolean shouldBreak = false;
+            String input = sc.nextLine();
+
+            switch (input) {
+                case "bye":
+                    System.out.println(basicResponse("    Bye. Hope to see you again soon!"));
+                    shouldBreak = true;
+                    break;
+                case "list":
+                    StringBuilder sb = new StringBuilder();
+                    boolean first = true;
+                    for (int i = 0; i < storeTextIndex; i++) {
+//                        reply = reply + "    " + storeText[i] + "\n";
+                        if (first) {
+                            first = false;
+                        } else {
+                            sb.append("\n");
+                        }
+                        sb.append(storeText[i]);
+                    }
+                    System.out.println(basicResponse(sb.toString()));
+                    break;
+                default:
+                    String reply = basicResponse("    " + input);
+                    System.out.println(reply);
+                    storeText[storeTextIndex] = (storeTextIndex + 1) + ". " + input;
+                    storeTextIndex++;
+            }
+
+            if (shouldBreak) {
+                break;
+            }
         }
-        String end = basicResponse("Bye. Hope to see you again soon!");
-        System.out.println(end);
     }
 }
