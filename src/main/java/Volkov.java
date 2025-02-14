@@ -53,19 +53,35 @@ public class Volkov {
     }
 
     public static void doMarkCommand(String input) {
-        int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;
-        listOfTasks[taskNo].markAsDone();
-        String reply = "     Nice! I've marked this task as done:\n"
-                + "       " + listOfTasks[taskNo].toString();
-        System.out.println(formatResponse(reply));
+        try {
+            int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;
+            listOfTasks[taskNo].markAsDone();
+            String reply = "     Nice! I've marked this task as done:\n"
+                    + "       " + listOfTasks[taskNo].toString();
+            System.out.println(formatResponse(reply));
+        } catch (NullPointerException e) {
+            String reply = "     Task number not found, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        } catch (NumberFormatException e) {
+            String reply = "     No task number detected, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        }
     }
 
     public static void doUnmarkCommand(String input) {
-        int taskNo = Integer.parseInt(input.substring(UNMARK_CMD_LENGTH)) - 1;
-        listOfTasks[taskNo].unmarkAsDone();
-        String reply = "     OK, I've marked this task as not done yet:\n"
-                + "       " + listOfTasks[taskNo].toString();
-        System.out.println(formatResponse(reply));
+        try {
+            int taskNo = Integer.parseInt(input.substring(UNMARK_CMD_LENGTH)) - 1;
+            listOfTasks[taskNo].unmarkAsDone();
+            String reply = "     OK, I've marked this task as not done yet:\n"
+                    + "       " + listOfTasks[taskNo].toString();
+            System.out.println(formatResponse(reply));
+        } catch (NullPointerException e) {
+            String reply = "     Task number not found, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        } catch (NumberFormatException e) {
+            String reply = "     No task number detected, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        }
     }
 
     public static void doTodoCommand(String input) {
@@ -127,11 +143,8 @@ public class Volkov {
                 doEventCommand(input);
 
             } else {
-                String reply = formatResponse("     " + input);
-                System.out.println(reply);
-                Task t = new Task(input);
-                listOfTasks[listOfTasksIndex] = t;
-                listOfTasksIndex++;
+                String reply = "     Unknown command received, reenter command:\n";
+                System.out.println(formatResponse(reply));
             }
         }
     }
