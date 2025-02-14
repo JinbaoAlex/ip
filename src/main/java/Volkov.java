@@ -7,8 +7,8 @@ public class Volkov {
     private static final int MARK_CMD_LENGTH = 5;
     private static final int UNMARK_CMD_LENGTH = 7;
     private static final int TODO_CMD_LENGTH = 5;
-    private static final int DEADLINE_CMD_LENGTH = 9;
-    private static final int EVENT_CMD_LENGTH = 6;
+    private static final int DEADLINE_CMD_LENGTH = 8;
+    private static final int EVENT_CMD_LENGTH = 5;
     private static final int DEADLINE_BY_LENGTH = 4;
     private static final int EVENT_FROM_LENGTH = 6;
     private static final int EVENT_TO_LENGTH = 4;
@@ -20,9 +20,9 @@ public class Volkov {
     private static final String TODO_COMMAND = "todo";
     private static final String DEADLINE_COMMAND = "deadline";
     private static final String EVENT_COMMAND = "event";
-    private static final String BY_KEYWORD = " /by";
-    private static final String FROM_KEYWORD = " /from";
-    private static final String TO_KEYWORD = " /to";
+    private static final String BY_KEYWORD = "/by";
+    private static final String FROM_KEYWORD = "/from";
+    private static final String TO_KEYWORD = "/to";
 
     public static String formatResponse(String msg) {
         return "    ____________________________________________________________\n"
@@ -53,43 +53,91 @@ public class Volkov {
     }
 
     public static void doMarkCommand(String input) {
-        int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;
-        listOfTasks[taskNo].markAsDone();
-        String reply = "     Nice! I've marked this task as done:\n"
-                + "       " + listOfTasks[taskNo].toString();
-        System.out.println(formatResponse(reply));
+        try {
+            int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;
+            listOfTasks[taskNo].markAsDone();
+            String reply = "     Nice! I've marked this task as done:\n"
+                    + "       " + listOfTasks[taskNo].toString();
+            System.out.println(formatResponse(reply));
+        } catch (NullPointerException e) {
+            String reply = "     Task number not found, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        } catch (NumberFormatException e) {
+            String reply = "     No task number detected, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        }
     }
 
     public static void doUnmarkCommand(String input) {
-        int taskNo = Integer.parseInt(input.substring(UNMARK_CMD_LENGTH)) - 1;
-        listOfTasks[taskNo].unmarkAsDone();
-        String reply = "     OK, I've marked this task as not done yet:\n"
-                + "       " + listOfTasks[taskNo].toString();
-        System.out.println(formatResponse(reply));
+        try {
+            int taskNo = Integer.parseInt(input.substring(UNMARK_CMD_LENGTH)) - 1;
+            listOfTasks[taskNo].unmarkAsDone();
+            String reply = "     OK, I've marked this task as not done yet:\n"
+                    + "       " + listOfTasks[taskNo].toString();
+            System.out.println(formatResponse(reply));
+        } catch (NullPointerException e) {
+            String reply = "     Task number not found, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        } catch (NumberFormatException e) {
+            String reply = "     No task number detected, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        }
     }
 
     public static void doTodoCommand(String input) {
-        String taskDesc = input.substring(TODO_CMD_LENGTH);
-        Todo t = new Todo(taskDesc);
-        System.out.println(formatTaskMsg(t));
+        try {
+            String taskDesc = input.substring(TODO_CMD_LENGTH);
+            if (taskDesc.trim().isEmpty()) {
+                throw new MissingDescription("MISSING DESCRIPTION, reenter with description");
+            }
+            Todo t = new Todo(taskDesc);
+            System.out.println(formatTaskMsg(t));
+        } catch (MissingDescription e) {
+            System.out.println(formatResponse("     " + e.getMessage()));
+        }
     }
 
     public static void doDeadlineCommand(String input) {
-        int indexOfDeadline = input.indexOf(BY_KEYWORD);
-        String taskDesc = input.substring(DEADLINE_CMD_LENGTH, indexOfDeadline);
-        String deadline = input.substring(indexOfDeadline + DEADLINE_BY_LENGTH);
-        Deadline t = new Deadline(taskDesc, deadline);
-        System.out.println(formatTaskMsg(t));
+        try {
+            int indexOfDeadline = input.indexOf(BY_KEYWORD);
+            if (indexOfDeadline == -1) {
+                throw new MissingKeyword("MISSING '/by' keyword");
+            }
+            String taskDesc = input.substring(DEADLINE_CMD_LENGTH, indexOfDeadline - 1).trim();
+            if (taskDesc.trim().isEmpty()) {
+                throw new MissingDescription("MISSING DESCRIPTION, reenter with description");
+            }
+            String deadline = input.substring(indexOfDeadline - 1 + DEADLINE_BY_LENGTH).trim();
+            Deadline t = new Deadline(taskDesc, deadline);
+            System.out.println(formatTaskMsg(t));
+        } catch (MissingDescription | MissingKeyword e) {
+            System.out.println(formatResponse("     " + e.getMessage()));
+        }
     }
 
     public static void doEventCommand(String input) {
-        int indexOfStartDate = input.indexOf(FROM_KEYWORD);
-        int indexOfEndDate = input.indexOf(TO_KEYWORD);
-        String taskDesc = input.substring(EVENT_CMD_LENGTH, indexOfStartDate);
-        String startDate = input.substring(indexOfStartDate + EVENT_FROM_LENGTH, indexOfEndDate);
-        String endDate = input.substring(indexOfEndDate + EVENT_TO_LENGTH);
-        Event t = new Event(taskDesc, startDate, endDate);
-        System.out.println(formatTaskMsg(t));
+        try {
+            int indexOfStartDate = input.indexOf(FROM_KEYWORD);
+            if (indexOfStartDate == -1) {
+                throw new MissingKeyword("MISSING '/from' keyword");
+            }
+            int indexOfEndDate = input.indexOf(TO_KEYWORD);
+            if (indexOfEndDate == -1) {
+                throw new MissingKeyword("MISSING '/to' keyword");
+            }
+            String taskDesc = input.substring(EVENT_CMD_LENGTH, indexOfStartDate - 1).trim();
+
+            if (taskDesc.trim().isEmpty()) {
+                throw new MissingDescription("MISSING DESCRIPTION, reenter with description");
+            }
+
+            String startDate = input.substring(indexOfStartDate - 1 + EVENT_FROM_LENGTH, indexOfEndDate - 1).trim();
+            String endDate = input.substring(indexOfEndDate - 1 + EVENT_TO_LENGTH).trim();
+            Event t = new Event(taskDesc, startDate, endDate);
+            System.out.println(formatTaskMsg(t));
+        } catch (MissingDescription | MissingKeyword e) {
+            System.out.println(formatResponse("     " + e.getMessage()));
+        }
     }
 
     public static void main(String[] args) {
@@ -127,11 +175,8 @@ public class Volkov {
                 doEventCommand(input);
 
             } else {
-                String reply = formatResponse("     " + input);
-                System.out.println(reply);
-                Task t = new Task(input);
-                listOfTasks[listOfTasksIndex] = t;
-                listOfTasksIndex++;
+                String reply = "     Unknown command received, reenter command:";
+                System.out.println(formatResponse(reply));
             }
         }
     }
