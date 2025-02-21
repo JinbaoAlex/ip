@@ -1,8 +1,13 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
 
 public class Volkov {
-    private static Task[] listOfTasks = new Task[100];
-    private static int listOfTasksIndex = 0;
+    private static ArrayList<Task> listOfTasks = new ArrayList<>();
 
     private static final int MARK_CMD_LENGTH = 5;
     private static final int UNMARK_CMD_LENGTH = 7;
@@ -31,11 +36,10 @@ public class Volkov {
     }
 
     public static String formatTaskMsg(Task t) {
-        listOfTasks[listOfTasksIndex] = t;
-        listOfTasksIndex++;
+        listOfTasks.add(t);
         String msg = "     Got it. I've added this task:\n"
                 + "       " + t.toString() + "\n"
-                + "     Now you have " + listOfTasksIndex + " tasks in the list.";
+                + "     Now you have " + listOfTasks.size() + " tasks in the list.";
         return formatResponse(msg);
     }
 
@@ -46,8 +50,8 @@ public class Volkov {
     public static void doListCommand() {
         StringBuilder sb = new StringBuilder();
         sb.append("     Here are the tasks in your list:");
-        for (int i = 0; i < listOfTasksIndex; i++) {
-            sb.append("\n     ").append(i + 1).append(".").append(listOfTasks[i]);
+        for (int i = 0; i < listOfTasks.size(); i++) {
+            sb.append("\n     ").append(i + 1).append(".").append(listOfTasks.get(i));
         }
         System.out.println(formatResponse(sb.toString()));
     }
@@ -55,9 +59,9 @@ public class Volkov {
     public static void doMarkCommand(String input) {
         try {
             int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;
-            listOfTasks[taskNo].markAsDone();
+            listOfTasks.get(taskNo).markAsDone();
             String reply = "     Nice! I've marked this task as done:\n"
-                    + "       " + listOfTasks[taskNo].toString();
+                    + "       " + listOfTasks.get(taskNo).toString();
             System.out.println(formatResponse(reply));
         } catch (NullPointerException e) {
             String reply = "     Task number not found, reenter with correct task number:";
@@ -71,9 +75,9 @@ public class Volkov {
     public static void doUnmarkCommand(String input) {
         try {
             int taskNo = Integer.parseInt(input.substring(UNMARK_CMD_LENGTH)) - 1;
-            listOfTasks[taskNo].unmarkAsDone();
+            listOfTasks.get(taskNo).unmarkAsDone();
             String reply = "     OK, I've marked this task as not done yet:\n"
-                    + "       " + listOfTasks[taskNo].toString();
+                    + "       " + listOfTasks.get(taskNo).toString();
             System.out.println(formatResponse(reply));
         } catch (NullPointerException e) {
             String reply = "     Task number not found, reenter with correct task number:";
@@ -140,12 +144,94 @@ public class Volkov {
         }
     }
 
-    public static void main(String[] args) {
-        String opening = "    ____________________________________________________________\n"
+    public static void saveFile() {
+        String fileName = "./data/volkov.txt";
+
+        try {
+            File f = new File(fileName);
+
+            File parentDir = f.getParentFile();
+            if (!parentDir.exists()) {
+                if (parentDir.mkdirs()) {
+                    System.out.println(formatResponse("     Folder missing, new folder created"));
+                }
+            }
+
+            if (f.createNewFile()) {
+                System.out.println(formatResponse("     No file present, new file created"));
+            }
+
+            FileWriter fw = new FileWriter(fileName);
+            for (Task task : listOfTasks) {
+                fw.write(task.txtSave() + "\n");
+            }
+            fw.close();
+
+        } catch (IOException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+    }
+
+    public static void loadFile() {
+
+        String fileName = "./data/volkov.txt";
+
+        String newUserOpening = "    ____________________________________________________________\n"
                 + "     Hello! I'm Volkov\n"
                 + "     What can I do for you?\n"
                 + "    ____________________________________________________________\n";
-        System.out.println(opening);
+
+        String returnUserOpening = "    ____________________________________________________________\n"
+                + "     Welcome back!\n"
+                + "     What can Volkov do for you?\n"
+                + "    ____________________________________________________________\n";
+
+        File f = new File(fileName);
+        if (f.exists()) {
+            System.out.println(returnUserOpening);
+        } else {
+            System.out.println(newUserOpening);
+        }
+
+        try {
+            Scanner s = new Scanner(f);
+            while (s.hasNextLine()) {
+                String taskString = s.nextLine();
+
+                if (taskString.startsWith("[T]")) {
+                    Task t = new Todo(taskString.substring(7).trim());
+                    if (taskString.contains("[X]")) {
+                        t.markAsDone();
+                    }
+                    listOfTasks.add(t);
+                } else if (taskString.startsWith("[D]")) {
+                    String[] descAndDate = taskString.substring(7).split("\\|");
+                    String desc = descAndDate[0].trim();
+                    String date = descAndDate[1].trim();
+                    Task t = new Deadline(desc, date);
+                    if (taskString.contains("[X]")) {
+                        t.markAsDone();
+                    }
+                    listOfTasks.add(t);
+                } else if (taskString.startsWith("[E]")) {
+                    String[] descAndDate = taskString.substring(7).split("\\|");
+                    String desc = descAndDate[0].trim();
+                    String start = descAndDate[1].trim();
+                    String end = descAndDate[2].trim();
+                    Task t = new Event(desc, start, end);
+                    if (taskString.contains("[X]")) {
+                        t.markAsDone();
+                    }
+                    listOfTasks.add(t);
+                }
+            }
+        } catch (FileNotFoundException e) {
+
+        }
+    }
+
+    public static void main(String[] args) {
+        loadFile();
 
         Scanner sc = new Scanner(System.in);
 
@@ -179,5 +265,6 @@ public class Volkov {
                 System.out.println(formatResponse(reply));
             }
         }
+        saveFile();
     }
 }

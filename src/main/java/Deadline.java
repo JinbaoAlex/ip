@@ -6,6 +6,10 @@ public class Deadline extends Task {
         this.deadline = deadline;
     }
 
+    public String txtSave() {
+        return "[D]" + super.txtSave() + "|" + deadline;
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + deadline + ")";
