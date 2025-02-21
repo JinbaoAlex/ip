@@ -1,11 +1,14 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Volkov {
-    private static Task[] listOfTasks = new Task[100];
-    private static int listOfTasksIndex = 0;
+//    private static Task[] listOfTasks = new Task[100];
+//    private static int listOfTasksIndex = 0;
+    private static ArrayList<Task> listOfTasks = new ArrayList<>();
 
     private static final int MARK_CMD_LENGTH = 5;
     private static final int UNMARK_CMD_LENGTH = 7;
+    private static final int DELETE_CMD_LENGTH = 7;
     private static final int TODO_CMD_LENGTH = 5;
     private static final int DEADLINE_CMD_LENGTH = 8;
     private static final int EVENT_CMD_LENGTH = 5;
@@ -17,6 +20,7 @@ public class Volkov {
     private static final String LIST_COMMAND = "list";
     private static final String MARK_COMMAND = "mark";
     private static final String UNMARK_COMMAND = "unmark";
+    private static final String DELETE_COMMAND = "delete";
     private static final String TODO_COMMAND = "todo";
     private static final String DEADLINE_COMMAND = "deadline";
     private static final String EVENT_COMMAND = "event";
@@ -31,11 +35,10 @@ public class Volkov {
     }
 
     public static String formatTaskMsg(Task t) {
-        listOfTasks[listOfTasksIndex] = t;
-        listOfTasksIndex++;
+        listOfTasks.add(t);
         String msg = "     Got it. I've added this task:\n"
                 + "       " + t.toString() + "\n"
-                + "     Now you have " + listOfTasksIndex + " tasks in the list.";
+                + "     Now you have " + listOfTasks.size() + " tasks in the list.";
         return formatResponse(msg);
     }
 
@@ -46,8 +49,8 @@ public class Volkov {
     public static void doListCommand() {
         StringBuilder sb = new StringBuilder();
         sb.append("     Here are the tasks in your list:");
-        for (int i = 0; i < listOfTasksIndex; i++) {
-            sb.append("\n     ").append(i + 1).append(".").append(listOfTasks[i]);
+        for (int i = 0; i < listOfTasks.size(); i++) {
+            sb.append("\n     ").append(i + 1).append(".").append(listOfTasks.get(i));
         }
         System.out.println(formatResponse(sb.toString()));
     }
@@ -55,9 +58,9 @@ public class Volkov {
     public static void doMarkCommand(String input) {
         try {
             int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;
-            listOfTasks[taskNo].markAsDone();
+            listOfTasks.get(taskNo).markAsDone();
             String reply = "     Nice! I've marked this task as done:\n"
-                    + "       " + listOfTasks[taskNo].toString();
+                    + "       " + listOfTasks.get(taskNo).toString();
             System.out.println(formatResponse(reply));
         } catch (NullPointerException e) {
             String reply = "     Task number not found, reenter with correct task number:";
@@ -71,9 +74,26 @@ public class Volkov {
     public static void doUnmarkCommand(String input) {
         try {
             int taskNo = Integer.parseInt(input.substring(UNMARK_CMD_LENGTH)) - 1;
-            listOfTasks[taskNo].unmarkAsDone();
+            listOfTasks.get(taskNo).unmarkAsDone();
             String reply = "     OK, I've marked this task as not done yet:\n"
-                    + "       " + listOfTasks[taskNo].toString();
+                    + "       " + listOfTasks.get(taskNo).toString();
+            System.out.println(formatResponse(reply));
+        } catch (NullPointerException e) {
+            String reply = "     Task number not found, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        } catch (NumberFormatException e) {
+            String reply = "     No task number detected, reenter with correct task number:";
+            System.out.println(formatResponse(reply));
+        }
+    }
+
+    public static void doDeleteCommand(String input) {
+        try {
+            int taskNo = Integer.parseInt(input.substring(DELETE_CMD_LENGTH)) - 1;
+            listOfTasks.remove(taskNo);
+            String reply = "     Noted. I've removed this task::\n"
+                    + "       " + listOfTasks.get(taskNo).toString()
+                    + "     Now you have " + listOfTasks.size() + " tasks in the list.";
             System.out.println(formatResponse(reply));
         } catch (NullPointerException e) {
             String reply = "     Task number not found, reenter with correct task number:";
@@ -164,6 +184,9 @@ public class Volkov {
 
             } else if (input.startsWith(UNMARK_COMMAND)) {
                 doUnmarkCommand(input);
+
+            } else if (input.startsWith(DELETE_COMMAND)) {
+                doDeleteCommand(input);
 
             } else if (input.startsWith(TODO_COMMAND)) {
                 doTodoCommand(input);
