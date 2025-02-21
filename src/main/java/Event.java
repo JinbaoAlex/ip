@@ -8,6 +8,10 @@ public class Event extends Task {
         this.endDate = endDate;
     }
 
+    public String txtSave() {
+        return "[D]" + super.txtSave() + "|" + startDate + "|" + endDate;
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + startDate + " to: " + endDate + ")";

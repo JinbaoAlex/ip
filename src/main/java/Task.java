@@ -15,14 +15,21 @@ public class Task {
         isDone = false;
     }
 
+    public String getMark() {
+        if (isDone) {
+            return "[X] ";
+        } else {
+            return "[ ] ";
+        }
+    }
+
+    public String txtSave() {
+        return getMark() + description;
+    }
+
     @Override
     public String toString() {
-        String mark;
-        if (isDone) {
-            mark = "[X] ";
-        } else {
-            mark = "[ ] ";
-        }
+        String mark = getMark();
         return mark + description;
     }
 }
