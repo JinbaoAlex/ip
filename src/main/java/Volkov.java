@@ -93,11 +93,11 @@ public class Volkov {
     public static void doDeleteCommand(String input) {
         try {
             int taskNo = Integer.parseInt(input.substring(DELETE_CMD_LENGTH)) - 1;
-            listOfTasks.remove(taskNo);
             String reply = "     Noted. I've removed this task::\n"
                     + "       " + listOfTasks.get(taskNo).toString()
-                    + "     Now you have " + listOfTasks.size() + " tasks in the list.";
+                    + "     Now you have " + (listOfTasks.size()-1) + " tasks in the list.";
             System.out.println(formatResponse(reply));
+            listOfTasks.remove(taskNo);
         } catch (NullPointerException e) {
             String reply = "     Task number not found, reenter with correct task number:";
             System.out.println(formatResponse(reply));

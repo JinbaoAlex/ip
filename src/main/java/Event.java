@@ -9,7 +9,7 @@ public class Event extends Task {
     }
 
     public String txtSave() {
-        return "[D]" + super.txtSave() + "|" + startDate + "|" + endDate;
+        return "[E]" + super.txtSave() + "|" + startDate + "|" + endDate;
     }
 
     @Override
