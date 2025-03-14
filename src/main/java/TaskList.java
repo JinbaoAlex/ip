@@ -1,3 +1,9 @@
+/**
+ * Contains the list of tasks
+ * <p>
+ * The {@code TaskList} class provides methods to add, remove, retrieve,
+ * and access the number of tasks stored in an {@code ArrayList}.
+ */
 import java.util.ArrayList;
 
 public class TaskList {
