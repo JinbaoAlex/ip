@@ -45,7 +45,7 @@ public class Parser {
             return new ListCommand();
 
         } else if (input.startsWith(FIND_COMMAND)) {
-            String searchTerm = input.substring(MARK_CMD_LENGTH);
+            String searchTerm = input.substring(FIND_CMD_LENGTH);
             return new FindCommand(searchTerm);
 
         } else if (input.startsWith(MARK_COMMAND)) {

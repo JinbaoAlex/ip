@@ -26,7 +26,7 @@ public class UnmarkCommand extends Commands {
             String reply = "     OK, I've marked this task as not done yet:\n"
                     + "       " + tasks.getTask(taskNo).toString();
             ui.formatResponse(reply);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
             String reply = "     Task number not found, reenter with correct task number:";
             new MissingCommand(reply).execute(tasks, ui, storage);
         } catch (NumberFormatException e) {
