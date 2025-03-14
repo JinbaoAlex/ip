@@ -1,7 +1,7 @@
 # Volkov User Guide
 
 Volkov is a command-line task manager that allows you to add 3 different types of tasks,
-set their relevant dates, and track your progress with simple commands. 
+set their relevant dates, and track your progress with simple commands.
 Your tasks are saved automatically, allowing you to revisit whenever you need to.
 
 ## Adding a Todo Task: `todo`
@@ -153,3 +153,17 @@ Saves the task list on the hard disk and closes the program
      See you again soon! Service terminated.
     ____________________________________________________________
 ```
+
+### Command Summary
+
+| Action       | Format and Examples                                                                                          |
+|--------------|--------------------------------------------------------------------------------------------------------------|
+| **Todo**     | `todo DESCRIPTION`<br/>e.g., `todo buy groceries`                                                            |
+| **Deadline** | `deadline DESCRIPTION /by DATE`<br/>e.g., `deadline do homework /by 2025-03-14`                              |
+| **Event**    | `event DESCRIPTION /from STARTDATE /to ENDDATE`<br/>e.g., `event open house /from 2025-02-16 /to 2025-02-18` |
+| **Mark**     | `mark TASKNO`<br/>e.g.,  `mark 1`                                                                            |
+| **Unmark**   | `unmark TASKNO`<br/>e.g., `unmark 1`                                                                         |
+| **Delete**   | `delete TASKNO`<br/>e.g., `delete 1`                                                                         |
+| **List**     | `list`                                                                                                       |
+| **Find**     | `find SEARCHTERM`<br/>e.g., `find groceries`                                                                 |
+| **Bye**      | `bye`                                                                                                        |
