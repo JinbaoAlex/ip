@@ -4,6 +4,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The {@code Storage} class deals with the loading
+ * and saving of tasks in a local txt file.
+ */
 public class Storage {
     private final String filePath;
     Ui ui;
@@ -13,6 +17,14 @@ public class Storage {
         this.ui = ui;
     }
 
+    /**
+     * Saves the current list of tasks to a txt file.
+     * <p>
+     * If the file or directory does not exist, it will be created first.
+     * Tasks are saved in a format to ease the load process
+     *
+     * @param taskList The list of tasks to be saved.
+     */
     public void saveFile(TaskList taskList) {
         try {
             File f = new File(filePath);
@@ -39,6 +51,16 @@ public class Storage {
         }
     }
 
+    /**
+     * Attempts to load tasks from the txt file into a new {@code TaskList}.
+     * <p>
+     * If the file exists, it greets the user  as a returning user,
+     * reads, parses and loads the tasks from the txt file to a new {@code TaskList}
+     * which then gets returned. Otherwise, it greets the user as a new user
+     * and returns an empty {@code TaskList}.
+     *
+     * @return A {@code TaskList} containing the loaded tasks.
+     */
     public TaskList loadFile() {
         TaskList taskList = new TaskList();
 

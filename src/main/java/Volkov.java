@@ -1,3 +1,6 @@
+/**
+ * The main code for the Volkov application that handles the overall workflow.
+ */
 public class Volkov {
     private final Storage storage;
     private final TaskList tasks;
@@ -9,6 +12,10 @@ public class Volkov {
         this.tasks = storage.loadFile();
     }
 
+    /**
+     * Main application loop for processing user commands. This keeps
+     * running until the user exits the program.
+     */
     public void run() {
         boolean isExit = false;
         while (!isExit) {

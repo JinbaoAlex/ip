@@ -1,3 +1,9 @@
+/**
+ * Represents the command to mark a task as done.
+ * <p>
+ * The {@code MarkCommand} updates the specified task number's
+ * task's status as done and displays a confirmation message to the user.
+ */
 public class MarkCommand extends Commands {
     private final int taskNo;
 
@@ -5,6 +11,15 @@ public class MarkCommand extends Commands {
         this.taskNo = taskNo;
     }
 
+    /**
+     * Executes the command by marking the specified task as done.
+     * Displays a confirmation message when successful, or an error
+     * message if the task number is invalid.
+     *
+     * @param tasks   The {@code TaskList} containing all tasks.
+     * @param ui      The {@code Ui} for user interaction.
+     * @param storage The {@code Storage} for file operations.
+     */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             tasks.getTask(taskNo).markAsDone();

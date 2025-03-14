@@ -1,5 +1,9 @@
 import java.util.Scanner;
-
+/**
+ * The {@code Ui} class deals with interactions with the
+ * user by handling the formatting of responses,
+ * reading user input, and displaying greeting messages.
+ */
 public class Ui {
     private Scanner sc = new Scanner(System.in);
 
@@ -13,16 +17,33 @@ public class Ui {
             + "     What can Volkov do for you?\n"
             + "    ____________________________________________________________\n";
 
+    /**
+     * Prints a formatted response.
+     *
+     * @param msg The message to be displayed after formatting.
+     */
     public void formatResponse(String msg) {
         System.out.println(formatResponseString(msg));
     }
 
+    /**
+     * Formats a given message.
+     *
+     * @param msg The message to be formatted.
+     * @return A formatted string of the given message
+     */
     public String formatResponseString(String msg) {
         return "    ____________________________________________________________\n"
                 + msg + "\n"
                 + "    ____________________________________________________________\n";
     }
 
+    /**
+     * Prints the formatted message for when a new task is added.
+     * <p>
+     * @param t The task that was added.
+     * @param tasks The task list that the task is added to.
+     */
     public void formatTaskMsg(Task t, TaskList tasks) {
         String msg = "     Got it. I've added this task:\n"
                 + "       " + t.toString() + "\n"
@@ -34,10 +55,16 @@ public class Ui {
         return sc.nextLine();
     }
 
+    /**
+     * Displays the new user greeting message.
+     */
     public void newUserGreet() {
         System.out.println(newUserOpening);
     }
 
+    /**
+     * Displays the returning user greeting message.
+     */
     public void returnUserGreet() {
         System.out.println(returnUserOpening);
     }

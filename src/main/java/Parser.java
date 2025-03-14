@@ -1,3 +1,7 @@
+/**
+ * The {@code Parser} class deals with making sense of the user command,
+ * then maps it to the respective commands.
+ */
 public class Parser {
     private static final int MARK_CMD_LENGTH = 5;
     private static final int UNMARK_CMD_LENGTH = 7;
@@ -22,6 +26,16 @@ public class Parser {
     private static final String FROM_KEYWORD = "/from";
     private static final String TO_KEYWORD = "/to";
 
+    /**
+     * Parses the given user input and returns the corresponding command.
+     * <p>
+     * This method identifies the relevant command by checking the input string
+     * against predetermined command keywords and extracts the respective necessary
+     * parameters, using which to return an appropriate {@code Commands} object.
+     *
+     * @param input The user input to parse.
+     * @return A {@code Commands} object representing the parsed command.
+     */
     public static Commands parse(String input) {
         if (input.startsWith(BYE_COMMAND)) {
             return new ByeCommand();
