@@ -23,7 +23,7 @@ public class MarkCommand extends Commands {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             tasks.getTask(taskNo).markAsDone();
-            String reply = "     Nice! I've marked this task as done:\n"
+            String reply = "     Roger. This task has been marked as done:\n"
                     + "       " + tasks.getTask(taskNo).toString();
             ui.formatResponse(reply);
         } catch (NullPointerException | IndexOutOfBoundsException e) {

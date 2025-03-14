@@ -19,9 +19,9 @@ public class DeleteCommand extends Commands {
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
-            String reply = "     Noted. I've removed this task::\n"
-                + "       " + tasks.getTask(taskNo).toString()
-                + "     Now you have " + (tasks.size()-1) + " tasks in the list.";
+            String reply = "     Roger. Task has been removed:\n"
+                + "       " + tasks.getTask(taskNo).toString() + "\n"
+                + "     You now have " + (tasks.size()-1) + " tasks in the list.";
             ui.formatResponse(reply);
             tasks.removeTask(taskNo);
         } catch (NullPointerException | IndexOutOfBoundsException e) {

@@ -8,7 +8,7 @@ public class Ui {
     private Scanner sc = new Scanner(System.in);
 
     private final String newUserOpening = "    ____________________________________________________________\n"
-            + "     Hello! I'm Volkov\n"
+            + "     Greetings user. I'm Volkov, your task manager\n"
             + "     What can I do for you?\n"
             + "    ____________________________________________________________\n";
 
@@ -45,9 +45,9 @@ public class Ui {
      * @param tasks The task list that the task is added to.
      */
     public void formatTaskMsg(Task t, TaskList tasks) {
-        String msg = "     Got it. I've added this task:\n"
+        String msg = "     Roger. Task has been added to the list:\n"
                 + "       " + t.toString() + "\n"
-                + "     Now you have " + tasks.size() + " tasks in the list.";
+                + "     You now have " + tasks.size() + " tasks in the list.";
         System.out.println(formatResponseString(msg));
     }
 

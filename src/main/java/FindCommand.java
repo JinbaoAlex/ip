@@ -20,7 +20,7 @@ public class FindCommand extends Commands {
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         StringBuilder sb = new StringBuilder();
-        sb.append("     Here are the matching tasks in your list:");
+        sb.append("     These are the tasks that match you search query:");
         int count = 1;
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.getTask(i).find(searchTerm)) {

@@ -11,7 +11,7 @@ public class ByeCommand extends Commands {
      * @param storage The {@code Storage} for file operations.
      */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        new Ui().formatResponse("     Bye. Hope to see you again soon!");
+        new Ui().formatResponse("     See you again soon! Service terminated.");
     }
 
     /**

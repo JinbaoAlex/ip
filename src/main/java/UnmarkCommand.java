@@ -23,7 +23,7 @@ public class UnmarkCommand extends Commands {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             tasks.getTask(taskNo).unmarkAsDone();
-            String reply = "     OK, I've marked this task as not done yet:\n"
+            String reply = "     Roger. This task has been marked as not done yet:\n"
                     + "       " + tasks.getTask(taskNo).toString();
             ui.formatResponse(reply);
         } catch (NullPointerException | IndexOutOfBoundsException e) {
