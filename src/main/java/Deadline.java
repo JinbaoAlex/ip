@@ -2,6 +2,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a deadline task with a description, completion status, and deadline date.
+ * <p>
+ * The {@code Deadline} class provides methods to mark the task as done,
+ * unmark it, retrieve its status, and formatting for displaying or saving.
+ */
 public class Deadline extends Task {
     protected String deadline;
     protected LocalDate deadlineLocalDate;

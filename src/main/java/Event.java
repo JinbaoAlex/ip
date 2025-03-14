@@ -2,6 +2,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents an event task with a description, completion status, and start and end dates.
+ * <p>
+ * The {@code Event} class provides methods to mark the task as done,
+ * unmark it, retrieve its status, and formatting for displaying or saving.
+ */
 public class Event extends Task {
     protected String startDate;
     protected String endDate;

@@ -1,3 +1,9 @@
+/**
+ * Represents a todo task with a description and completion status.
+ * <p>
+ * The {@code Todo} class provides methods to mark the task as done,
+ * unmark it, retrieve its status, and formatting for displaying or saving.
+ */
 public class Todo extends Task {
 
     public Todo(String description) {

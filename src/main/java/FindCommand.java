@@ -1,3 +1,8 @@
+/**
+ * Represents the command to search for tasks
+ * <p>
+ * The {@code FindCommand} finds the task the user wishes to search for in the {@code TaskList}.
+ */
 public class FindCommand extends Commands {
     private final String searchTerm;
 
@@ -5,6 +10,14 @@ public class FindCommand extends Commands {
         this.searchTerm = searchTerm;
     }
 
+    /**
+     * Executes the command by iterating through and printing every task in the {@code TaskList}
+     * that matches the searchTerm.
+     *
+     * @param tasks   The {@code TaskList} containing all tasks.
+     * @param ui      The {@code Ui} for user interaction.
+     * @param storage The {@code Storage} for file operations.
+     */
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         StringBuilder sb = new StringBuilder();
         sb.append("     Here are the matching tasks in your list:");
