@@ -1,4 +1,5 @@
 public class Parser {
+    private static final int FIND_CMD_LENGTH = 5;
     private static final int MARK_CMD_LENGTH = 5;
     private static final int UNMARK_CMD_LENGTH = 7;
     private static final int DELETE_CMD_LENGTH = 7;
@@ -12,6 +13,7 @@ public class Parser {
 
     private static final String BYE_COMMAND = "bye";
     private static final String LIST_COMMAND = "list";
+    private static final String FIND_COMMAND = "find";
     private static final String MARK_COMMAND = "mark";
     private static final String UNMARK_COMMAND = "unmark";
     private static final String DELETE_COMMAND = "delete";
@@ -27,6 +29,10 @@ public class Parser {
             return new ByeCommand();
         } else if (input.startsWith(LIST_COMMAND)) {
             return new ListCommand();
+
+        } else if (input.startsWith(FIND_COMMAND)) {
+            String searchTerm = input.substring(MARK_CMD_LENGTH);
+            return new FindCommand(searchTerm);
 
         } else if (input.startsWith(MARK_COMMAND)) {
             int taskNo = Integer.parseInt(input.substring(MARK_CMD_LENGTH)) - 1;

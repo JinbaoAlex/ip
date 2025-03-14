@@ -23,6 +23,10 @@ public class Task {
         }
     }
 
+    public boolean find(String searchTerm) {
+        return this.description.contains(searchTerm);
+    }
+
     public String txtSave() {
         return getMark() + description;
     }
